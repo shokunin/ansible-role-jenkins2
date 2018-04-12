@@ -1,0 +1,52 @@
+---
+# Install and/or check for the required bits to build AMIs:tfenv, rmv, and packer.
+# Fix up paths as needed.
+
+# TFenv - https://github.com/kamatama41/tfenv
+- name: Cloning tfenv
+  git:
+    repo: https://github.com/kamatama41/tfenv.git
+    dest: /opt/tfenv
+
+- name: Update PATH to tfenv for user jenkins
+  shell: "echo 'export PATH=${PATH}:/opt/tfenv/bin' >> ~jenkins/.bashrc"
+
+# RVM
+# assumes RVM already installed as a system rvm installation and can
+# be found in the usual paths
+# ROLE: https://galaxy.ansible.com/rvm_io/ruby/
+#
+# example:
+# roles:
+#   - { role: rvm_io.ruby,
+#       tags: ruby,
+#       become: yes,
+#
+#       rvm1_rubies: ['ruby-2.2.5','ruby-2.3.1'],
+#       rvm1_install_flags: '--auto-dotfiles',   # Remove --user-install from defaults
+#       rvm1_install_path: /usr/local/rvm,       # Set to system location
+#       rvm1_user: root                          # Need root account to access system location
+#     }
+- name: Looking for rvm
+  shell: "command -v rvm && echo '1'||echo '0'"
+  register: rvm_installed
+
+- name: Fail if rvm is not installed
+  fail:
+    msg: "RVM not installed"
+  when: rvm_installed == 0
+
+# packer
+# https://releases.hashicorp.com/packer/1.2.2/packer_1.2.2_linux_amd64.zip
+- name: Download packer
+  get_url:
+    url: https://releases.hashicorp.com/packer/1.2.2/packer_1.2.2_linux_amd64.zip
+    dest: /tmp
+
+- name: unzip packer
+  shell: "cd /usr/local/bin && unzip /tmp/packer_1.2.2_linux_amd64.zip"
+
+# Others
+- name: install other build dependencies
+  apt: name=build-essentials state=installed
+
