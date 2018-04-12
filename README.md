@@ -5,6 +5,10 @@ Ansible Role for Jenkins 2+
 
 This [Ansible](https://www.ansible.com/) role can be used to install and manage [Jenkins 2](https://jenkins.io/2.0/).
 
+History
+-------
+* Duplicated from https://github.com/karlmdavis/ansible-role-jenkins2 as of commit edf47bbc6872d225f5a5f482ffa2e07846867100 (Kenneth)
+
 Requirements
 ------------
 
