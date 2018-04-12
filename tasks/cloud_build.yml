@@ -8,8 +8,11 @@
     repo: https://github.com/kamatama41/tfenv.git
     dest: /opt/tfenv
 
-- name: Update PATH to tfenv for user jenkins
-  shell: "echo 'export PATH=${PATH}:/opt/tfenv/bin' >> ~jenkins/.bashrc"
+- name: Update PATH to tfenv for everybody
+  shell: "echo 'export PATH=${PATH}:/opt/tfenv/bin' > /etc/profile.d/tfenv.sh"
+
+- name: Install latest version of terraform
+  shell: "/opt/tfenv/bin/tfenv install latest"
 
 # RVM
 # assumes RVM already installed as a system rvm installation and can
