@@ -84,3 +84,6 @@ jenkins_packages_url_base: 'https://pkg.jenkins.io'
 
 # Set to `true` to add a `proxy: _none_` setting for the YUM repo.
 jenkins_packages_repo_yum_disable_proxy: false
+
+# Set to `true` to install all the bits necessary for this jenkins server to build AMIs
+cloud_build: false
