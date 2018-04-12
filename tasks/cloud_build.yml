@@ -48,5 +48,5 @@
 
 # Others
 - name: install other build dependencies
-  apt: name=build-essentials state=installed
+  apt: name=build-essential state=installed
 
