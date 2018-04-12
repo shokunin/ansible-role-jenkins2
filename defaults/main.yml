@@ -57,6 +57,7 @@ jenkins_plugins_recommended:
   - ldap
   - email-ext
   - mailer
+  - scm-sync-configuration
 
 # The additional plugins that users of this role would like to be installed 
 # (must be overridden).
