@@ -12,7 +12,7 @@
   shell: "echo 'export PATH=${PATH}:/opt/tfenv/bin' > /etc/profile.d/tfenv.sh"
 
 - name: Install latest version of terraform
-  shell: "source /etc/profile.d/tfenv.sh && /opt/tfenv/bin/tfenv install latest"
+  shell: ". /etc/profile.d/tfenv.sh && /opt/tfenv/bin/tfenv install latest"
 
 # RVM
 # assumes RVM already installed as a system rvm installation and can
