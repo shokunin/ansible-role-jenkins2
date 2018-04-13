@@ -195,6 +195,9 @@
 # Include ssh.yml
 - include_tasks: "ssh.yml"
 
+# Include admin.yml
+- include_tasks: "admin.yml"
+
 # Include cloud_build if this jenkins installation will be used to make AMIs
 - include_tasks: "cloud_build.yml"
   when: cloud_build
