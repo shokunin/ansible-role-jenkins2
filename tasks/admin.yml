@@ -22,7 +22,7 @@
 
 - name: Read admin password
   set_fact:
-     initial_admin_password: "{{ lookup('file', '/var/lib/jenkins/secrets/initialAdminPassword' ) | trim)}}"
+     initial_admin_password: "{{ lookup('file', '/var/lib/jenkins/secrets/initialAdminPassword' ) | replace('\n', '')}}"
 
 - name: Create admin account, configure security authentication and authorization
   jenkins_script:
