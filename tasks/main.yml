@@ -192,6 +192,9 @@
   action: fail
   when: jenkins_ui.content.find('Jenkins ver. 2') == -1
 
+# Include ssh.yml
+- include_tasks: "ssh.yml"
+
 # Include cloud_build if this jenkins installation will be used to make AMIs
 - include_tasks: "cloud_build.yml"
   when: cloud_build

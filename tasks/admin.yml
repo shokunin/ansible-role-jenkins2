@@ -1,0 +1,63 @@
+---
+# current version of this role disables the setup wizard which caused the default admin 
+# account to not be created. We want to
+# 1) create the account with a random password
+# 2) switch auth to local instance
+
+- name: Check for admin password
+  stat:
+    path: /var/lib/jenkins/secrets/initialAdminPassword
+  register: adminpass_stat_result
+
+- name: Create admin password
+  shell: "echo ${RANDOM}${RANDOM}${RANDOM}${RANDOM}${RANDOM} > /var/lib/jenkins/secrets/initialAdminPassword"
+  when: adminpass_stat_result.stat.exists == false
+
+- name: Fix admin password file ownership and perms
+  shell: "chown jenkins:jenkins /var/lib/jenkins/secrets/initialAdminPassword && chmod 600 /var/lib/jenkins/secrets/initialAdminPassword"
+
+- name: Read admin password
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  become: true
+  changeed_when: false
+  register: initial_admin_password
+
+- name: Create admin account, configure security authentication and authorization
+  jenkins_script:
+    url: "{{ jenkins_url_local }}"
+    user: "{{ jenkins_dynamic_admin_username | default(omit) }}"
+    password: "{{ jenkins_dynamic_admin_password | default(omit) }}"
+    script: |
+      // These are the basic imports that Jenkin's interactive script console
+      // automatically includes.
+      import jenkins.*;
+      import jenkins.model.*;
+      import hudson.*;
+      import hudson.model.*;
+
+      // Configure the security realm, which handles authentication.
+      def securityRealm = new hudson.security.HudsonPrivateSecurityRealm(false)
+      if(!securityRealm.equals(Jenkins.instance.getSecurityRealm())) {
+        Jenkins.instance.setSecurityRealm(securityRealm)
+
+        // Create a user to login with. Ensure that user is bound to the
+        // system-local `jenkins` user's SSH key, to ensure that this
+        // account can be used with Jenkins' CLI.
+        def adminUser = securityRealm.createAccount("admin", "{{ initial_admin_password }}")
+        adminUser.save()
+
+        Jenkins.instance.save()
+        println "Changed authentication."
+      }
+
+      // Configure the authorization strategy, which specifies who can do
+      // what.
+      def authorizationStrategy = new hudson.security.FullControlOnceLoggedInAuthorizationStrategy()
+      if(!authorizationStrategy.equals(Jenkins.instance.getAuthorizationStrategy())) {
+        authorizationStrategy.setAllowAnonymousRead(false)
+        Jenkins.instance.setAuthorizationStrategy(authorizationStrategy)
+        Jenkins.instance.save()
+        println "Changed authorization."
+      }
+
+

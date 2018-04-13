@@ -1,0 +1,51 @@
+---
+# This file is used to setup SSH for the jenkins user
+
+- name: Generate SSH Keys for jenkins Service Account if not provided
+  user:
+    name: jenkins
+    generate_ssh_key: yes
+  become: true
+  when: jenkins_ssh_key == ''
+
+- name: Copy SSH key for Jenkins Service Account when provided (create dir)
+  file:
+    path: /var/lib/jenkins/.ssh
+    owner: jenkins
+    group: jenkins
+    mode: 0700
+    state: directory
+  when: jenkins_ssh_key != ''
+
+- name: Copy SSH key for Jenkins Service Account when provided (private)
+  copy:
+    src: "{{ jenkins_ssh_key }}"
+    dest: /var/lib/jenkins/.ssh/id_rsa
+    owner: jenkins
+    group: jenkins
+    mode: 0600
+  when: jenkins_ssh_key != ''
+
+- name: Copy SSH key for Jenkins Service Account when provided (public)
+  copy:
+    src: "{{ jenkins_ssh_pub }}"
+    dest: /var/lib/jenkins/.ssh/id_rsa.pub
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+  when: jenkins_ssh_pub != ''
+
+- name: Read SSH Public Key for jenkins Service Account
+  shell: cat /var/lib/jenkins/.ssh/id_rsa.pub
+  become: true
+  changed_when: false
+  register: jenkins_user_ssh_public_file
+
+- name: Parse SSH Public Key for jenkins Service Account
+  set_fact: jenkins_user_ssh_public_key="{{ jenkins_user_ssh_public_file.stdout_lines[0] }}"
+
+- name: Print public key
+  debug:
+    msg: "Jenkins user public ssh key: -->  {{ jenkins_user_ssh_public_file.stdout_lines[0] }}"
+
+
