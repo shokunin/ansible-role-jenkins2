@@ -21,10 +21,8 @@
     mode: 0600
 
 - name: Read admin password
-  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
-  become: true
-  changeed_when: false
-  register: initial_admin_password
+  set_fact:
+     initial_admin_password: "{{ lookup('file', '/var/lib/jenkins/secrets/initialAdminPassword' ) | trim)}}"
 
 - name: Create admin account, configure security authentication and authorization
   jenkins_script:
