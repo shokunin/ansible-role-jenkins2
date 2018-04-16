@@ -13,6 +13,10 @@
   shell: "openssl rand -base64 32 > /var/lib/jenkins/secrets/initialAdminPassword"
   when: adminpass_stat_result.stat.exists == false
 
+- name: Read admin password
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  register: initial_admin_password
+
 - name: Fix admin password file ownership and perms
   file:
     path: /var/lib/jenkins/secrets/initialAdminPassword
@@ -20,9 +24,9 @@
     group: jenkins
     mode: 0600
 
-- name: Read admin password
-  set_fact:
-     initial_admin_password: "{{ lookup('file', '/var/lib/jenkins/secrets/initialAdminPassword' ) | replace('\n', '')}}"
+- name: Print admin password
+  debug:
+    msg: "Admin password --> {{ initial_admin_password.stdout }}"
 
 - name: Create admin account, configure security authentication and authorization
   jenkins_script:
@@ -45,7 +49,7 @@
         // Create a user to login with. Ensure that user is bound to the
         // system-local `jenkins` user's SSH key, to ensure that this
         // account can be used with Jenkins' CLI.
-        def adminUser = securityRealm.createAccount("admin", "{{ initial_admin_password }}")
+        def adminUser = securityRealm.createAccount("admin", "{{ initial_admin_password.stdout }}")
         adminUser.save()
 
         Jenkins.instance.save()
