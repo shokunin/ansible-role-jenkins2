@@ -58,6 +58,7 @@ jenkins_plugins_recommended:
   - email-ext
   - mailer
   - scm-sync-configuration
+  - rvm
 
 # The additional plugins that users of this role would like to be installed 
 # (must be overridden).
