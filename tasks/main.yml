@@ -49,6 +49,12 @@
     mode: 0755
   become: true
 
+# Include admin.yml
+- include_tasks: "admin.yml"
+
+# Install and/or update plugins.
+- import_tasks: "plugins.yml"
+
 - name: Configure Jenkins (Miscellaneous Settings)
   jenkins_script:
     url: "{{ jenkins_url_local }}"
@@ -191,12 +197,6 @@
 
 # Include ssh.yml
 - include_tasks: "ssh.yml"
-
-# Include admin.yml
-- include_tasks: "admin.yml"
-
-# Install and/or update plugins.
-- import_tasks: "plugins.yml"
 
 # Include cloud_build if this jenkins installation will be used to make AMIs
 - include_tasks: "cloud_build.yml"
