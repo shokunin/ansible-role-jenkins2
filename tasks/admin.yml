@@ -35,6 +35,7 @@
     msg: "Admin password --> {{ initial_admin_password.stdout }}"
 
 - name: Create admin account, configure security authentication and authorization
+  when: adminpass_stat_result.stat.exists == false
   jenkins_script:
     url: "{{ jenkins_url_local }}"
     user: "{{ jenkins_dynamic_admin_username | default(omit) }}"
