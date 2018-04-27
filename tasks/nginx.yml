@@ -17,7 +17,7 @@
   notify: reload_nginx
 
 - name: https-redirect nginx
-  template:
+  copy:
     src: https-redirect
     dest: /etc/nginx/sites-available/https-redirect
     mode: 0644

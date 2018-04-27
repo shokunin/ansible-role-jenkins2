@@ -27,3 +27,8 @@
   retries: 60
   delay: 1
   
+- name: reload_nginx
+  command: systemctl reload nginx
+
+- name: reload_systemctl
+  command: /bin/systemctl daemon-reload

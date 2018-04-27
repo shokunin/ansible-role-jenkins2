@@ -1,12 +1,17 @@
 ---
 # This file is used to setup SSH for the jenkins user
 
+- name: Check for existing ssh key
+  stat:
+    path: /var/lib/jenkins/.ssh/id_rsa
+  register: ssh_key_exist
+
 - name: Generate SSH Keys for jenkins Service Account if not provided
   user:
     name: jenkins
     generate_ssh_key: yes
   become: true
-  when: jenkins_ssh_key == ''
+  when: jenkins_ssh_key == '' and ssh_key_exist.stat.exists == false
 
 - name: Copy SSH key for Jenkins Service Account when provided (create dir)
   file:

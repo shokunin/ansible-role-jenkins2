@@ -47,7 +47,7 @@
     dest: /tmp
 
 - name: unzip packer
-  shell: "cd /usr/local/bin && unzip /tmp/packer_1.2.2_linux_amd64.zip"
+  shell: "cd /usr/local/bin && unzip -o /tmp/packer_1.2.2_linux_amd64.zip"
 
 # Others
 - name: install other build dependencies

@@ -53,7 +53,7 @@
 - include_tasks: "admin.yml"
 
 # Install and/or update plugins.
-- import_tasks: "plugins.yml"
+- include_tasks: "plugins.yml"
 
 - name: Configure Jenkins (Miscellaneous Settings)
   jenkins_script:
@@ -197,6 +197,9 @@
 
 # Include ssh.yml
 - include_tasks: "ssh.yml"
+
+# Include nginx.yml
+- include_tasks: "nginx.yml"
 
 # Include cloud_build if this jenkins installation will be used to make AMIs
 - include_tasks: "cloud_build.yml"

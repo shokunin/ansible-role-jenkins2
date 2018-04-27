@@ -21,7 +21,7 @@
   set_fact:
     jenkins_dynamic_admin_username: "admin"
     jenkins_dynamic_admin_password: "{{ initial_admin_password.stdout }}"
-  when: adminpass_stat_result.stat.exists == false
+  when: adminpass_stat_result.stat.exists == true
 
 - name: Fix admin password file ownership and perms
   file:
@@ -32,7 +32,7 @@
 
 - name: Print admin password
   debug:
-    msg: "Admin password --> {{ initial_admin_password.stdout }}"
+    msg: "Admin password --> {{ jenkins_dynamic_admin_password }}"
 
 - name: Create admin account, configure security authentication and authorization
   when: adminpass_stat_result.stat.exists == false
