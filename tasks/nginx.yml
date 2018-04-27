@@ -1,0 +1,31 @@
+---
+- name: install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: nginx main configuration
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify: reload_nginx
+
+- name: Remove the default site link
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: reload_nginx
+
+- name: https-redirect nginx
+  template:
+    src: https-redirect
+    dest: /etc/nginx/sites-available/https-redirect
+    mode: 0644
+  notify: reload_nginx
+
+- name: enable https-redirect nginx
+  file:
+    src: /etc/nginx/sites-available/https-redirect
+    dest: /etc/nginx/sites-enabled/https-redirect
+    state: link
+  notify: reload_nginx

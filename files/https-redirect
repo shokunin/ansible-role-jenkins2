@@ -1,0 +1,12 @@
+server {
+
+  listen          80;
+  server_name     _default;
+
+  location / {
+
+    # assuming ssl is enabled, force redirect all http requests
+    if ($http_x_forwarded_proto = 'http') {
+        return 301 https://$host$request_uri;
+    }
+}
