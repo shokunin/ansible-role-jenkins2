@@ -8,6 +8,14 @@
     repo: https://github.com/kamatama41/tfenv.git
     dest: /opt/tfenv
 
+- name: Setup versions directory
+  file:
+    path: /opt/tfenv/versions
+    ensure: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0755
+
 - name: Update PATH to tfenv for everybody
   shell: "echo 'export PATH=${PATH}:/opt/tfenv/bin' > /etc/profile.d/tfenv.sh"
 
