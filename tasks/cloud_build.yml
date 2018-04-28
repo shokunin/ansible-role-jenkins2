@@ -11,7 +11,7 @@
 - name: Setup versions directory
   file:
     path: /opt/tfenv/versions
-    ensure: directory
+    state: directory
     owner: jenkins
     group: jenkins
     mode: 0755
