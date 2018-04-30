@@ -204,3 +204,6 @@
 # Include cloud_build if this jenkins installation will be used to make AMIs
 - include_tasks: "cloud_build.yml"
   when: cloud_build
+
+# Include Security
+- include_tasks: "security.yml"

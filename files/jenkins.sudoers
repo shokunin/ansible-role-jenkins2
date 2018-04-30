@@ -1,0 +1,6 @@
+#########################################################################
+# 			Ansible managed
+#########################################################################
+jenkins ALL=(ALL) NOPASSWD:/usr/local/bin/packer
+jenkins ALL=(ALL) NOPASSWD:/bin/rm
+

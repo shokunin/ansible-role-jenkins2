@@ -1,0 +1,10 @@
+---
+# Setup secuirity sudo for Jenkins user
+
+- name:  jenkins sudeors
+  copy:
+    src: jenkins.sudoers
+    dest: /etc/sudoers.d/jenkins
+    owner: root
+    group: root
+    mode: 0440
