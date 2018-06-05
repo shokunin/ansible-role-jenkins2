@@ -207,3 +207,8 @@
 
 # Include Security
 - include_tasks: "security.yml"
+
+# Include ansible on Jenkins
+- include_tasks: "install_ansible.yml"
+  when: jenkins_install_ansible
+
