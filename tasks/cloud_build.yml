@@ -61,3 +61,12 @@
 - name: install other build dependencies
   apt: name=build-essential state=installed
 
+# this fixes any docker errors with persistent mac addresses see http://manpages.ubuntu.com/manpages/xenial/man5/systemd.link.5.html
+# requires a reboot
+- name: set macaddress policy for non
+  copy:
+    src: 99-default.link
+    dest: /lib/systemd/network/99-default.link
+    owner: root
+    group: root
+    mode: 0644
