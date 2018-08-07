@@ -59,6 +59,7 @@ jenkins_plugins_recommended:
   - mailer
   - scm-sync-configuration
   - rvm
+  - workflow-support
 
 # The additional plugins that users of this role would like to be installed 
 # (must be overridden).
