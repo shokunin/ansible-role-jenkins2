@@ -191,9 +191,10 @@
     no_proxy: localhost
   register: jenkins_ui
 
-- name: Verify Jenkins Web UI Content
-  action: fail
-  when: jenkins_ui.content.find('Jenkins ver. 2') == -1
+# commented out 20180807 KC - newer versions of jenkins has removed the version string from the /login page
+#- name: Verify Jenkins Web UI Content
+#  action: fail
+#  when: jenkins_ui.content.find('Jenkins ver. 2') == -1
 
 # Include ssh.yml
 - include_tasks: "ssh.yml"
