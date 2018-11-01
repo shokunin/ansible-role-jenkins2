@@ -94,3 +94,5 @@ jenkins_ssh_key: ''
 jenkins_ssh_pub: ''
 
 jenkins_install_ansible: false
+
+terraform_version: latest

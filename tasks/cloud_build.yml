@@ -1,5 +1,6 @@
 ---
 # Install and/or check for the required bits to build AMIs:tfenv, rmv, and packer.
+
 # Fix up paths as needed.
 
 # TFenv - https://github.com/kamatama41/tfenv
@@ -19,8 +20,8 @@
 - name: Update PATH to tfenv for everybody
   shell: "echo 'export PATH=${PATH}:/opt/tfenv/bin' > /etc/profile.d/tfenv.sh"
 
-- name: Install latest version of terraform
-  shell: ". /etc/profile.d/tfenv.sh && /opt/tfenv/bin/tfenv install latest"
+- name: Install a version of terraform
+  shell: ". /etc/profile.d/tfenv.sh && /opt/tfenv/bin/tfenv install {{ terraform_version }}"
 
 # RVM
 # assumes RVM already installed as a system rvm installation and can
